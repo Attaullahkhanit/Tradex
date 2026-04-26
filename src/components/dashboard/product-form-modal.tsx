@@ -114,7 +114,9 @@ export function ProductFormModal({ open, onOpenChange, product }: ProductFormMod
                   <Select onValueChange={field.onChange} value={field.value}>
                     <FormControl>
                       <SelectTrigger className="bg-zinc-950 border-zinc-800">
-                        <SelectValue placeholder="Select a category" />
+                        <SelectValue placeholder="Select a category">
+                          {field.value ? categoriesData?.data?.data?.find(c => c.id === field.value)?.name || "Select a category" : "Select a category"}
+                        </SelectValue>
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent className="bg-zinc-900 border-zinc-800 text-white">

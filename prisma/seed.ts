@@ -31,9 +31,9 @@ async function main() {
         )
     );
 
-    console.log('--- Seeding 10 Users ---');
+    console.log('--- Seeding 100 Users ---');
     const users = [];
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 100; i++) {
         const user = await prisma.user.create({
             data: {
                 name: faker.person.fullName(),
@@ -44,9 +44,9 @@ async function main() {
         users.push(user);
     }
 
-    console.log('--- Seeding 15 Products ---');
+    console.log('--- Seeding 100 Products ---');
     const products = [];
-    for (let i = 0; i < 15; i++) {
+    for (let i = 0; i < 100; i++) {
         const randomCategory = categories[Math.floor(Math.random() * categories.length)];
         const product = await prisma.product.create({
             data: {
@@ -61,9 +61,9 @@ async function main() {
         products.push(product);
     }
 
-    console.log('--- Seeding 20 Orders ---');
+    console.log('--- Seeding 100 Orders ---');
     const statuses = ['PENDING', 'PAID', 'SHIPPED', 'DELIVERED'];
-    for (let i = 0; i < 20; i++) {
+    for (let i = 0; i < 100; i++) {
         const randomUser = users[Math.floor(Math.random() * users.length)];
         const numItems = faker.number.int({ min: 1, max: 4 });
         const selectedProducts = faker.helpers.arrayElements(products, numItems);
