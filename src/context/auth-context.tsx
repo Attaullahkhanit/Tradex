@@ -27,14 +27,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     async function initAuth() {
+      console.log("AUTH_PROVIDER: Initializing authentication check...");
       try {
         const currentUser = await getCurrentUser();
+        console.log("AUTH_PROVIDER: Current user result:", currentUser ? `Found user: ${currentUser.email}` : "No user session");
         if (currentUser) {
           setUser(currentUser as User);
         }
       } catch (error) {
-        console.error("Auth initialization failed:", error);
+        console.error("AUTH_PROVIDER: Error during auth initialization:", error);
       } finally {
+        console.log("AUTH_PROVIDER: Auth initialization complete, setting isLoading to false");
         setIsLoading(false);
       }
     }

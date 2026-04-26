@@ -6,7 +6,7 @@ export async function GET(req: Request) {
     const { searchParams } = new URL(req.url);
     const status = searchParams.get("status") || "all";
 
-    const where: any = {};
+    const where: { status?: string } = {};
     if (status !== "all") {
       where.status = status;
     }

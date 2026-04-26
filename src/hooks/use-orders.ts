@@ -14,7 +14,7 @@ export interface Order {
   _count?: {
     orderItems: number;
   };
-  orderItems?: any[];
+  orderItems?: unknown[];
 }
 
 export interface OrdersResponse {

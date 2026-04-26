@@ -1,36 +1,102 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Tradex - Advanced E-commerce & Trade Management System
 
-## Getting Started
+Tradex is a professional-grade, full-stack dashboard designed for comprehensive management of e-commerce operations. It provides a powerful interface for tracking products, managing orders, and monitoring business performance through a sophisticated real-time analytics suite.
 
-First, run the development server:
+## 🚀 Key Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- **Robust Authentication**: Secure user login, signup, and password recovery system using JWT and Bcrypt.
+- **Dynamic Dashboard**: Interactive overview of business metrics with real-time analytics.
+- **Product Management**: Complete CRUD operations for products and categories with advanced filtering.
+- **Order Tracking**: Efficient management of customer orders and fulfillment statuses.
+- **Customer Insights**: Detailed database of customer history and interactions.
+- **Responsive Management UI**: A premium, fully responsive interface built with Radix UI and Tailwind CSS 4.
+- **Data Visualization**: Beautifully rendered charts and data tables for business intelligence.
+- **System Settings**: Configurable system parameters and user profile management.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## 🛠 Tech Stack
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Frontend
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Framework**: [Next.js 16](https://nextjs.org/) (App Router)
+- **Library**: [React 19](https://react.dev/)
+- **Styling**: [Tailwind CSS 4](https://tailwindcss.com/)
+- **UI Components**: [Shadcn/ui](https://ui.shadcn.com/) & [Radix UI](https://www.radix-ui.com/)
+- **Icons**: [Lucide React](https://lucide.dev/)
+- **Charts**: [Recharts](https://recharts.org/)
 
-## Learn More
+### State & Data Management
 
-To learn more about Next.js, take a look at the following resources:
+- **Data Fetching**: [TanStack Query v5](https://tanstack.com/query/latest) (React Query)
+- **Tables**: [TanStack Table v8](https://tanstack.com/table/latest) (React Table)
+- **Forms**: [React Hook Form](https://react-hook-form.com/)
+- **Validation**: [Zod](https://zod.dev/)
+- **API Client**: [Axios](https://axios-http.com/)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Backend & Database
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **ORM**: [Prisma](https://www.prisma.io/)
+- **Database**: SQLite (via `better-sqlite3`)
+- **Authentication**: JWT (JSON Web Tokens)
+- **Caching/Queue**: [Redis](https://redis.io/) (via `ioredis`)
+- **Security**: JWT & Bcrypt
 
-## Deploy on Vercel
+## ⚙️ Getting Started
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Prerequisites
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Node.js (Latest LTS version recommended)
+- Redis server (Running locally or accessible via URL)
+
+### Installation
+
+1. **Clone the repository**:
+
+   ```bash
+   git clone <repository-url>
+   cd Tradex
+   ```
+
+2. **Install dependencies**:
+
+   ```bash
+   npm install
+   ```
+
+3. **Environment Setup**:
+   Create a `.env` file in the root directory and configure the following:
+
+   ```env
+   DATABASE_URL="file:./dev.db"
+   JWT_SECRET="your-secret-key"
+   REDIS_URL="redis://localhost:6379"
+   ```
+
+4. **Database Initialization**:
+
+   ```bash
+   npx prisma generate
+   npx prisma db push
+   ```
+
+5. **Run the development server**:
+
+   ```bash
+   npm run dev
+   ```
+
+6. **Access the application**:
+   Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+## 📁 Project Structure
+
+- `src/app`: Next.js App Router pages and API routes.
+- `src/components`: Reusable UI components (Shadcn/ui).
+- `src/context`: React Context providers for global state (Auth, etc.).
+- `src/hooks`: Custom React hooks for data fetching and logic.
+- `src/lib`: Utility functions and client initializations (Prisma, Axios).
+- `src/server`: Server-side logic and database interactions.
+- `prisma`: Database schema and migration files.
+
+## 📄 License
+
+This project is licensed under the MIT License.

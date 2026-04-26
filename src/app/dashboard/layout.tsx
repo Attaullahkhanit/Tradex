@@ -40,11 +40,11 @@ export default function DashboardLayout({
   }
 
   return (
-    <div className="flex h-screen bg-black text-zinc-100 overflow-hidden">
+    <div className="flex min-h-screen bg-black text-zinc-100">
       {/* Desktop Sidebar */}
-      <Sidebar className="hidden md:flex" />
+      <Sidebar className="hidden md:flex sticky top-0 h-screen" />
 
-      <div className="flex flex-1 flex-col overflow-hidden">
+      <div className="flex flex-1 flex-col min-w-0">
         {/* Mobile Header */}
         <header className="flex h-16 items-center border-b border-zinc-800 bg-zinc-950 px-6 md:hidden">
           <Button
@@ -63,8 +63,10 @@ export default function DashboardLayout({
           </div>
         </header>
 
-        <main className="flex-1 overflow-y-auto bg-zinc-950/50 p-4 md:p-0">
-          {children}
+        <main className="flex-1 bg-zinc-950/50">
+          <div className="h-full w-full">
+            {children}
+          </div>
         </main>
       </div>
 

@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -78,7 +77,7 @@ export function ProductFormModal({ open, onOpenChange, product }: ProductFormMod
       }
       onOpenChange(false);
       form.reset();
-    } catch (error) {
+    } catch {
       toast.error("An error occurred");
     }
   };

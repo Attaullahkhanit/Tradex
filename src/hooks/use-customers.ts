@@ -1,5 +1,6 @@
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import apiClient from "@/lib/api-client";
+import { toast } from "sonner";
 
 export interface Customer {
   id: string;
@@ -40,5 +41,25 @@ export const useCustomers = (params: { page?: number; limit?: number } = {}) => 
       const response = await apiClient.get(`/customers?${searchParams.toString()}`);
       return response.data;
     },
+  });
+};
+
+export const useUpdateCustomer = () => {
+  const queryClient = useQueryClient();
+  
+  return useMutation({
+    mutationFn: async ({ id, ...data }: { id: string; name: string; email: string }) => {
+      const response = await apiClient.patch(`/customers/${id}`, data);
+      return response.data;
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["customers"] });
+      toast.success(data.message || "Customer updated successfully");
+    },
+    onError: (error: unknown) => {
+      const err = error as { response?: { data?: { error?: string } } };
+      const message = err.response?.data?.error || "Failed to update customer";
+      toast.error(message);
+    }
   });
 };

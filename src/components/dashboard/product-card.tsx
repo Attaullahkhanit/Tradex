@@ -4,7 +4,7 @@ import { Product } from "@/types/product";
 import { Card, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { ShoppingCart, Star } from "lucide-react";
+import { ShoppingCart } from "lucide-react";
 import Image from "next/image";
 
 import { toast } from "sonner";
@@ -16,7 +16,7 @@ interface ProductCardProps {
 export function ProductCard({ product }: ProductCardProps) {
   const handleAddToCart = () => {
     toast.success("Added to cart", {
-      description: `${product.title} has been added to your cart.`,
+      description: `${product.name} has been added to your cart.`,
     });
   };
 
@@ -24,24 +24,22 @@ export function ProductCard({ product }: ProductCardProps) {
     <Card className="group overflow-hidden border-zinc-800 bg-zinc-900/40 transition-all hover:bg-zinc-900/60 hover:ring-1 hover:ring-zinc-700">
       <div className="relative aspect-square overflow-hidden bg-zinc-900">
         <Image
-          src={product.thumbnail}
-          alt={product.title}
+          src={product.image || "/placeholder.jpg"}
+          alt={product.name}
           fill
           className="object-cover transition-transform duration-300 group-hover:scale-110"
           sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
         />
-        <Badge className="absolute left-2 top-2 border-white/20 bg-black/50 text-[10px] font-medium text-white backdrop-blur-md">
-          {product.category.toUpperCase()}
-        </Badge>
-        <div className="absolute right-2 top-2 flex items-center gap-1 rounded-full bg-black/60 px-2 py-0.5 text-xs text-yellow-500 backdrop-blur-md">
-          <Star className="h-3 w-3 fill-current" />
-          {product.rating}
-        </div>
+        {product.category && (
+          <Badge className="absolute left-2 top-2 border-white/20 bg-black/50 text-[10px] font-medium text-white backdrop-blur-md">
+            {product.category.name.toUpperCase()}
+          </Badge>
+        )}
       </div>
       <CardHeader className="p-4 pt-4">
         <div className="flex items-start justify-between">
           <CardTitle className="line-clamp-1 text-base group-hover:text-primary transition-colors">
-            {product.title}
+            {product.name}
           </CardTitle>
         </div>
         <CardDescription className="line-clamp-2 text-xs">

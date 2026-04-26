@@ -36,6 +36,15 @@ export default function RootLayout({
           </QueryProvider>
         </AuthProvider>
         <Toaster position="top-right" expand={false} richColors />
+        
+        {/* Hydration bait for browser extensions (Google Dictionary/Translate) */}
+        <div 
+          id="pronounceRootElement" 
+          className="pronounceRootElementItem"
+          style={{ position: "fixed", top: "0px", left: "0px", width: "1px", height: "1px", zIndex: 2147483645 }}
+          hidden={true}
+          suppressHydrationWarning 
+        />
       </body>
     </html>
   );

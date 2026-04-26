@@ -1,6 +1,6 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import apiClient from "@/lib/api-client";
-import { ProductsResponse, Product } from "@/types/product";
+import { ProductsResponse } from "@/types/product";
 
 export interface ProductFilters {
   search?: string;
@@ -30,7 +30,7 @@ export const useProducts = (filters: ProductFilters = {}) => {
 export const useCreateProduct = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async (data: any) => {
+    mutationFn: async (data: Record<string, unknown>) => {
       const response = await apiClient.post("/products", data);
       return response.data;
     },
@@ -43,7 +43,7 @@ export const useCreateProduct = () => {
 export const useUpdateProduct = () => {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: async ({ id, ...data }: { id: string; [key: string]: any }) => {
+    mutationFn: async ({ id, ...data }: { id: string; [key: string]: unknown }) => {
       const response = await apiClient.put(`/products/${id}`, data);
       return response.data;
     },

@@ -15,9 +15,8 @@ import {
   FormMessage 
 } from "@/components/ui/form";
 import { toast } from "sonner";
-import { UserPlus, Loader2 } from "lucide-react";
+import { UserPlus, Loader2, Eye, EyeOff } from "lucide-react";
 import { useAuth } from "@/context/auth-context";
-// Removed signUpUser server action in favor of API route
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -36,6 +35,7 @@ type SignupFormValues = z.infer<typeof signupSchema>;
 
 export default function SignupPage() {
   const [loading, setLoading] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
   const { login } = useAuth();
 
   const form = useForm<SignupFormValues>({
@@ -76,40 +76,46 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-950 px-4 py-12">
-      <div className="w-full max-w-md space-y-8">
+    <div className="flex min-h-screen items-center justify-center bg-[#f8fafc] px-4 py-12 relative overflow-hidden">
+      {/* Decorative background elements */}
+      <div className="absolute top-0 left-0 w-full h-full opacity-40 pointer-events-none">
+        <div className="absolute top-[-10%] right-[-10%] w-[40%] h-[40%] rounded-full bg-primary/10 blur-[120px]" />
+        <div className="absolute bottom-[-10%] left-[-10%] w-[40%] h-[40%] rounded-full bg-primary/10 blur-[120px]" />
+      </div>
+
+      <div className="w-full max-w-md space-y-8 relative z-10">
         <div className="text-center">
-          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-primary/10">
-            <UserPlus className="h-6 w-6 text-primary" />
+          <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-2xl bg-primary shadow-lg shadow-primary/20 -rotate-3">
+            <UserPlus className="h-7 w-7 text-white rotate-3" />
           </div>
-          <h2 className="mt-6 text-3xl font-bold tracking-tight text-white">
-            Create an account
+          <h2 className="mt-8 text-4xl font-extrabold tracking-tight text-slate-900">
+            Create account
           </h2>
-          <p className="mt-2 text-sm text-zinc-400">
-            Join us to start managing your products
+          <p className="mt-3 text-slate-500 font-medium">
+            Join Tradex and start managing your workspace
           </p>
         </div>
 
-        <Card className="border-zinc-800 bg-zinc-900/50 backdrop-blur-xl">
+        <Card className="border-slate-200 bg-white shadow-[0_8px_30px_rgb(0,0,0,0.06)] rounded-2xl overflow-hidden border">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} noValidate>
-              <CardHeader>
-                <CardTitle className="text-xl">Sign Up</CardTitle>
-                <CardDescription className="text-zinc-500">
+              <CardHeader className="pt-8 px-8">
+                <CardTitle className="text-2xl font-bold text-slate-800">Sign Up</CardTitle>
+                <CardDescription className="text-slate-400">
                   Enter your details to create your workspace
                 </CardDescription>
               </CardHeader>
-              <CardContent className="space-y-4 pb-6">
+              <CardContent className="space-y-5 px-8 pb-8">
                 <FormField
                   control={form.control}
                   name="name"
                   render={({ field }) => (
-                    <FormItem className="space-y-2">
-                      <FormLabel className="text-zinc-300">Full Name</FormLabel>
+                    <FormItem className="space-y-2.5">
+                      <FormLabel className="text-slate-700 font-semibold">Full Name</FormLabel>
                       <FormControl>
                         <Input
                           placeholder="John Doe"
-                          className="border-zinc-800 bg-zinc-950 text-white focus:ring-primary"
+                          className="h-12 border-slate-200 bg-slate-50 text-slate-900 focus:ring-slate-900 focus:border-slate-900 transition-all rounded-xl shadow-sm"
                           {...field}
                         />
                       </FormControl>
@@ -122,13 +128,13 @@ export default function SignupPage() {
                   control={form.control}
                   name="email"
                   render={({ field }) => (
-                    <FormItem className="space-y-2">
-                      <FormLabel className="text-zinc-300">Email</FormLabel>
+                    <FormItem className="space-y-2.5">
+                      <FormLabel className="text-slate-700 font-semibold">Email address</FormLabel>
                       <FormControl>
                         <Input
                           type="email"
                           placeholder="name@example.com"
-                          className="border-zinc-800 bg-zinc-950 text-white focus:ring-primary"
+                          className="h-12 border-slate-200 bg-slate-50 text-slate-900 focus:ring-slate-900 focus:border-slate-900 transition-all rounded-xl shadow-sm"
                           {...field}
                         />
                       </FormControl>
@@ -141,33 +147,43 @@ export default function SignupPage() {
                   control={form.control}
                   name="password"
                   render={({ field }) => (
-                    <FormItem className="space-y-2">
-                      <FormLabel className="text-zinc-300">Password</FormLabel>
+                    <FormItem className="space-y-2.5">
+                      <FormLabel className="text-slate-700 font-semibold">Password</FormLabel>
                       <FormControl>
-                        <Input
-                          type="password"
-                          className="border-zinc-800 bg-zinc-950 text-white focus:ring-primary"
-                          {...field}
-                        />
+                        <div className="relative">
+                          <Input
+                            type={showPassword ? "text" : "password"}
+                            placeholder="••••••••"
+                            className="h-12 border-slate-200 bg-slate-50 text-slate-900 focus:ring-slate-900 focus:border-slate-900 transition-all rounded-xl shadow-sm pr-11"
+                            {...field}
+                          />
+                          <button
+                            type="button"
+                            onClick={() => setShowPassword(!showPassword)}
+                            className="absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors p-1"
+                          >
+                            {showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}
+                          </button>
+                        </div>
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
               </CardContent>
-              <CardFooter className="flex flex-col space-y-4">
+              <CardFooter className="flex flex-col space-y-6 px-8 pb-8 bg-transparent border-none">
                 <Button 
                   type="submit" 
-                  className="w-full bg-primary hover:bg-primary/90" 
+                  className="w-full h-12 bg-slate-900 hover:bg-slate-800 text-white font-bold text-base rounded-xl transition-all shadow-lg active:scale-[0.98]" 
                   disabled={loading}
                 >
-                  {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                  {loading ? "Creating account..." : "Create Account"}
+                  {loading && <Loader2 className="mr-2 h-5 w-5 animate-spin" />}
+                  {loading ? "Creating account..." : "Register Now"}
                 </Button>
-                <p className="text-center text-sm text-zinc-500">
+                <p className="text-center text-sm text-slate-500 font-medium">
                   Already have an account?{" "}
-                  <Link href="/login" className="font-semibold text-primary hover:text-primary/80">
-                    Log in
+                  <Link href="/login" className="font-bold text-slate-900 hover:underline underline-offset-4">
+                    Sign in
                   </Link>
                 </p>
               </CardFooter>

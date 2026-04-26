@@ -11,7 +11,7 @@ export async function GET(req: Request) {
     const limit = parseInt(searchParams.get("limit") || "10");
     const skip = (page - 1) * limit;
 
-    const where: any = {
+    const where: { OR: Array<{ name: { contains: string } } | { description: { contains: string } }>; categoryId?: string } = {
       OR: [
         { name: { contains: search } },
         { description: { contains: search } },
@@ -22,7 +22,7 @@ export async function GET(req: Request) {
       where.categoryId = categoryId;
     }
 
-    let orderBy: any = { createdAt: "desc" };
+    let orderBy: Record<string, "asc" | "desc"> = { createdAt: "desc" };
     if (sortBy === "price-asc") orderBy = { price: "asc" };
     if (sortBy === "price-desc") orderBy = { price: "desc" };
     if (sortBy === "name-asc") orderBy = { name: "asc" };
