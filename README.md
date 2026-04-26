@@ -35,7 +35,7 @@ Tradex is a professional-grade, full-stack dashboard designed for comprehensive 
 ### Backend & Database
 
 - **ORM**: [Prisma](https://www.prisma.io/)
-- **Database**: SQLite (via `better-sqlite3`)
+- **Database**: PostgreSQL (via Neon Serverless)
 - **Authentication**: JWT (JSON Web Tokens)
 - **Caching/Queue**: [Redis](https://redis.io/) (via `ioredis`)
 - **Security**: JWT & Bcrypt
@@ -66,8 +66,9 @@ Tradex is a professional-grade, full-stack dashboard designed for comprehensive 
    Create a `.env` file in the root directory and configure the following:
 
    ```env
-   DATABASE_URL="file:./dev.db"
-   JWT_SECRET="your-secret-key"
+   # Get this from your Neon Dashboard
+   DATABASE_URL="postgresql://user:password@hostname.neon.tech/neondb?sslmode=require"
+   JWT_SECRET="your-super-secret-jwt-key"
    REDIS_URL="redis://localhost:6379"
    ```
 
@@ -86,6 +87,16 @@ Tradex is a professional-grade, full-stack dashboard designed for comprehensive 
 
 6. **Access the application**:
    Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+## 🚀 Deployment to Vercel
+
+1. Push your code to a GitHub repository.
+2. Import the project into your [Vercel](https://vercel.com/) dashboard.
+3. Go to **Settings > Environment Variables** and add your variables:
+   - `DATABASE_URL` (Your Neon connection string)
+   - `JWT_SECRET` (A secure random string)
+   - `REDIS_URL` (If using Redis)
+4. Click **Deploy**. Vercel will automatically run `prisma generate` during the build.
 
 ## 📁 Project Structure
 
