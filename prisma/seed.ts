@@ -1,12 +1,12 @@
-// prisma/seed.ts
 import "dotenv/config";
 import { PrismaClient } from '@prisma/client';
 import { faker } from '@faker-js/faker';
-import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
+import { PrismaPg } from "@prisma/adapter-pg";
+import { Pool } from "pg";
 
-// Simple initialization for Prisma 7.
-const url = process.env.DATABASE_URL || "file:./dev.db";
-const adapter = new PrismaBetterSqlite3({ url });
+const connectionString = process.env.DATABASE_URL;
+const pool = new Pool({ connectionString });
+const adapter = new PrismaPg(pool);
 const prisma = new PrismaClient({ adapter });
 
 async function main() {

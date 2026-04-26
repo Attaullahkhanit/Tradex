@@ -1,34 +1,12 @@
 import { PrismaClient } from "@prisma/client";
-import { PrismaBetterSqlite3 } from "@prisma/adapter-better-sqlite3";
-import path from "path";
-import "dotenv/config";
+import { PrismaPg } from "@prisma/adapter-pg";
+import { Pool } from "pg";
 
 const prismaClientSingleton = () => {
-  const url = process.env.DATABASE_URL || "file:./dev.db";
-  const rawDbPath = url.replace("file:", "");
-  const dbPath = path.isAbsolute(rawDbPath)
-    ? rawDbPath
-    : path.join(process.cwd(), rawDbPath);
-
-  console.log("PRISMA_INIT: Connecting to database at:", dbPath);
-
-  try {
-    // In Prisma 7, the adapter expects a config object with a 'url' property
-    const adapter = new PrismaBetterSqlite3({
-      url: url,
-      verbose: console.log
-    });
-
-    const client = new PrismaClient({
-      adapter
-    });
-
-    console.log("PRISMA_INIT: Client successfully initialized");
-    return client;
-  } catch (error) {
-    console.error("PRISMA_INIT_ERROR:", error);
-    throw error;
-  }
+  const connectionString = process.env.DATABASE_URL;
+  const pool = new Pool({ connectionString });
+  const adapter = new PrismaPg(pool);
+  return new PrismaClient({ adapter });
 };
 
 declare const globalThis: {
