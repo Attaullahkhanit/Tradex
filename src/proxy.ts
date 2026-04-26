@@ -15,8 +15,9 @@ export async function proxy(request: NextRequest) {
 
   if (token) {
     try {
-      // THIS IS WHERE YOU USE YOUR JWT_SECRET
-      const secret = new TextEncoder().encode(process.env.JWT_SECRET);
+      // Add fallback to match route.ts if environment variable is missing
+      const secretKey = process.env.JWT_SECRET || "your-super-secret-jwt-key-change-in-production";
+      const secret = new TextEncoder().encode(secretKey);
       await jwtVerify(token, secret);
       
       // If they are logged in, don't let them go to Login/Signup
