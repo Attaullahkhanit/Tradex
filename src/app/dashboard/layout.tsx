@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/auth-context";
-import { Menu, X, LayoutDashboard } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { Sidebar } from "@/components/dashboard/sidebar";
 import { TradexLogo } from "@/components/ui/tradex-logo";
 import { Button } from "@/components/ui/button";

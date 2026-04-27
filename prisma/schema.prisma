@@ -4,19 +4,21 @@ generator client {
 }
 
 datasource db {
-  provider  = "postgresql"
+  provider = "postgresql"
 }
 
+
 model User {
-  id        String   @id @default(uuid())
-  name      String
-  email     String   @unique
-  password          String
-  resetToken        String?  @unique
-  resetTokenExpiry  DateTime?
-  createdAt         DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  orders    Order[]
+  id               String     @id @default(uuid())
+  name             String
+  email            String     @unique
+  password         String
+  resetToken       String?    @unique
+  resetTokenExpiry DateTime?
+  createdAt        DateTime   @default(now())
+  updatedAt        DateTime   @updatedAt
+  orders           Order[]
+  stockLogs        StockLog[] // ← new back-relation
 }
 
 model Category {
@@ -27,17 +29,27 @@ model Category {
 }
 
 model Product {
-  id          String   @id @default(uuid())
+  id          String      @id @default(uuid())
   name        String
   description String?
   price       Float
   stock       Int
   image       String?
   categoryId  String
-  category    Category @relation(fields: [categoryId], references: [id])
+  category    Category    @relation(fields: [categoryId], references: [id])
   orderItems  OrderItem[]
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  // ── Stockroom fields ─────────────────────
+  sku           String?           @unique
+  costPrice     Float?
+  lowStockAlert Int               @default(10)
+  restockQty    Int               @default(50)
+  reservedStock Int               @default(0)
+
+  stockLogs     StockLog[]
+  suppliers     ProductSupplier[]
 }
 
 model Order {
@@ -45,7 +57,7 @@ model Order {
   customerId String
   customer   User        @relation(fields: [customerId], references: [id])
   total      Float
-  status     String      @default("PENDING") // PENDING, PAID, SHIPPED, DELIVERED
+  status     String      @default("PENDING")
   createdAt  DateTime    @default(now())
   updatedAt  DateTime    @updatedAt
   orderItems OrderItem[]
@@ -58,5 +70,49 @@ model OrderItem {
   productId String
   product   Product @relation(fields: [productId], references: [id])
   quantity  Int
-  price     Float   // Historical price at time of order
+  price     Float
+}
+
+// ─────────────────────────────────────────
+// NEW — STOCKROOM
+// ─────────────────────────────────────────
+
+model StockLog {
+  id        String   @id @default(uuid())
+  productId String
+  product   Product  @relation(fields: [productId], references: [id])
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  type      String   // RESTOCK | SALE | MANUAL | RETURN | DAMAGED
+  fromQty   Int
+  toQty     Int
+  change    Int
+  reason    String?
+  reference String?
+  createdAt DateTime @default(now())
+}
+
+model Supplier {
+  id        String            @id @default(uuid())
+  name      String
+  email     String?
+  phone     String?
+  address   String?
+  isActive  Boolean           @default(true)
+  products  ProductSupplier[]
+  createdAt DateTime          @default(now())
+  updatedAt DateTime          @updatedAt
+}
+
+model ProductSupplier {
+  id          String   @id @default(uuid())
+  productId   String
+  product     Product  @relation(fields: [productId], references: [id])
+  supplierId  String
+  supplier    Supplier @relation(fields: [supplierId], references: [id])
+  costPrice   Float
+  leadDays    Int
+  minOrderQty Int
+
+  @@unique([productId, supplierId])
 }

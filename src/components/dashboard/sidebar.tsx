@@ -5,14 +5,14 @@ import { usePathname } from "next/navigation";
 import { useAuth } from "@/context/auth-context";
 import { cn } from "@/lib/utils";
 import {
-  LayoutDashboard,
   ShoppingBag,
   Settings,
   LogOut,
   Users,
   Layers,
   CreditCard,
-  ChartNoAxesCombined
+  ChartNoAxesCombined,
+  Archive
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -22,6 +22,7 @@ import { TradexLogo } from "@/components/ui/tradex-logo";
 const menuItems = [
   { name: "Analytics", href: "/dashboard/analytics", icon: ChartNoAxesCombined },
   { name: "Products", href: "/dashboard/products", icon: ShoppingBag },
+  { name: "Stock Room", href: "/dashboard/stockroom", icon: Archive },
   { name: "Categories", href: "/dashboard/categories", icon: Layers },
   { name: "Orders", href: "/dashboard/orders", icon: CreditCard },
   { name: "Customers", href: "/dashboard/customers", icon: Users },

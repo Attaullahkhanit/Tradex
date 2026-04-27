@@ -24,7 +24,7 @@ export async function proxy(request: NextRequest) {
       if (isPublicPath && path !== "/") {
          return NextResponse.redirect(new URL("/dashboard/products", request.url));
       }
-    } catch (error) {
+    } catch {
       // If the secret is wrong or token is expired, kick them out
       const response = NextResponse.redirect(new URL("/login", request.url));
       response.cookies.delete("auth_token");
