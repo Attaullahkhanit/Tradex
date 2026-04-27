@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "@/context/auth-context";
 import { Menu, X, LayoutDashboard } from "lucide-react";
 import { Sidebar } from "@/components/dashboard/sidebar";
+import { TradexLogo } from "@/components/ui/tradex-logo";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -56,9 +57,7 @@ export default function DashboardLayout({
             <Menu className="h-5 w-5" />
           </Button>
           <div className="flex flex-1 items-center gap-2">
-            <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-primary">
-              <LayoutDashboard className="h-5 w-5 text-white" />
-            </div>
+            <TradexLogo className="h-8 w-8" />
             <span className="text-xl font-bold tracking-tight">Tradex</span>
           </div>
         </header>
