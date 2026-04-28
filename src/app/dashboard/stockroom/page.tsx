@@ -22,6 +22,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { PageLoader } from "@/components/ui/page-loader";
 
 const COLORS = ["#10b981", "#f59e0b", "#ef4444", "#6b7280"];
 
@@ -224,8 +225,9 @@ export default function StockroomPage() {
     },
   ];
 
-  if (!stats) return <div className="p-8 text-zinc-400">Loading...</div>;
-
+if (!stats) {
+    return <PageLoader />;
+  }
   const healthData = [
     { name: "Healthy", value: stats.healthyCount },
     { name: "Low", value: stats.lowStockCount },

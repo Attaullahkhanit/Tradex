@@ -27,6 +27,7 @@ const statusConfig = {
 
 import { Checkbox } from "@/components/ui/checkbox";
 import { DataTableColumnHeader } from "@/components/ui/data-table-column-header";
+import { PageLoader } from "@/components/ui/page-loader";
 
 export default function OrdersPage() {
   const [status, setStatus] = useState("all");
@@ -40,6 +41,9 @@ export default function OrdersPage() {
   const totalPages = data?.data?.last_page || 0;
   const updateStatus = useUpdateOrderStatus();
 
+  if (!data) {
+    return <PageLoader />;
+  }
   const handleUpdateStatus = async (id: string, newStatus: string) => {
     try {
       await updateStatus.mutateAsync({ id, status: newStatus });

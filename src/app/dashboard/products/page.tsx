@@ -22,6 +22,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { DataTable } from "@/components/ui/data-table";
 import { DataTableColumnHeader } from "@/components/ui/data-table-column-header";
 import { DeleteConfirmModal } from "@/components/dashboard/delete-confirm-modal";
+import { PageLoader } from "@/components/ui/page-loader";
 
 export default function ProductsPage() {
   const [search, setSearch] = useState("");
@@ -43,6 +44,10 @@ export default function ProductsPage() {
 
   const products = data?.data?.data || [];
   const totalPages = data?.data?.last_page || 0;
+
+  if (!data) {
+    return <PageLoader />;
+  }
 
   const handleEdit = (product: Product) => {
     setEditingProduct(product);

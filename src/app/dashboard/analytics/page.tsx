@@ -12,9 +12,9 @@ import {
   AlertTriangle, 
   TrendingUp,
   Package,
-  ArrowUpRight,
-  Loader2
+  ArrowUpRight
 } from "lucide-react";
+import { PageLoader } from "@/components/ui/page-loader";
 import { 
   AreaChart, 
   Area, 
@@ -29,13 +29,7 @@ import { cn } from "@/lib/utils";
 export default function AnalyticsPage() {
   const { data, isLoading } = useAnalytics();
 
-  if (isLoading) {
-    return (
-      <div className="flex h-[80vh] items-center justify-center">
-        <Loader2 className="h-8 w-8 animate-spin text-primary" />
-      </div>
-    );
-  }
+  if (isLoading) return <PageLoader />;
 
   const kpis = [
     {

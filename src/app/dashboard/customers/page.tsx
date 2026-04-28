@@ -11,6 +11,7 @@ import { DataTable } from "@/components/ui/data-table";
 
 import { Checkbox } from "@/components/ui/checkbox";
 import { DataTableColumnHeader } from "@/components/ui/data-table-column-header";
+import { PageLoader } from "@/components/ui/page-loader";
 
 export default function CustomersPage() {
   const [search, setSearch] = useState("");
@@ -24,6 +25,9 @@ export default function CustomersPage() {
   const customers = data?.data?.data || [];
   const totalPages = data?.data?.last_page || 0;
 
+  if (!data) {
+    return <PageLoader />;
+  }
   const filteredCustomers = customers?.filter(c => 
     c.name.toLowerCase().includes(search.toLowerCase()) || 
     c.email.toLowerCase().includes(search.toLowerCase())
