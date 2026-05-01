@@ -236,11 +236,12 @@ if (!stats) {
   ];
 
   return (
-    <div className="flex flex-col gap-8 p-6 md:p-8 max-w-7xl mx-auto text-zinc-100">
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight text-white mb-2">Stockroom</h1>
-        <p className="text-zinc-400">Manage inventory levels, suppliers and stock movements</p>
-      </div>
+    <div className="p-8 text-zinc-100">
+      <div className="flex flex-col gap-8">
+        <div>
+          <h1 className="text-3xl font-bold tracking-tight text-white mb-2">Stockroom</h1>
+          <p className="text-zinc-400">Manage inventory levels, suppliers and stock movements</p>
+        </div>
 
       {/* Summary Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -405,6 +406,7 @@ if (!stats) {
           fromPageIndex={(page - 1) * limit + 1}
           toPageIndex={Math.min(page * limit, total)}
         />
+      </div>
       </div>
 
       {/* Modals */}

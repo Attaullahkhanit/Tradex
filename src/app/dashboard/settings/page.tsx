@@ -12,7 +12,7 @@ const sections = [
 export default function SettingsPage() {
   return (
     <div className="p-8 pb-16">
-      <div className="mx-auto max-w-4xl space-y-8">
+      <div className="space-y-8">
         <div>
           <h1 className="text-3xl font-bold tracking-tight text-white">Settings</h1>
           <p className="text-zinc-500">Manage your application preferences and account security.</p>
