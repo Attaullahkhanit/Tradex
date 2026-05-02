@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { 
   LineChart, Line, XAxis, Tooltip, ResponsiveContainer, 
-  PieChart, Pie, Cell 
+  PieChart, Pie, Cell, AreaChart, Area 
 } from "recharts";
 import { Search, Plus, MoreVertical, Eye, Pencil, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -273,29 +273,75 @@ if (!stats) {
         <div className="p-6 rounded-xl border border-zinc-800 bg-zinc-900/50 flex flex-col">
           <h3 className="text-lg font-medium text-white">Stock health</h3>
           <p className="text-sm text-zinc-400 mb-6">Distribution across all SKUs</p>
-          <div className="flex-1 flex items-center justify-center relative">
-            <div className="w-full h-[200px]">
+          <div className="flex-1 flex flex-col sm:flex-row items-center justify-center gap-8 relative">
+            <div className="relative w-full max-w-[200px] h-[200px]">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
-                  <Pie data={healthData} innerRadius={60} outerRadius={80} paddingAngle={5} dataKey="value" stroke="none">
-                    {healthData.map((_, index) => (
-                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                    ))}
+                  <defs>
+                    <linearGradient id="gradientHealthy" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#10b981" />
+                      <stop offset="100%" stopColor="#059669" />
+                    </linearGradient>
+                    <linearGradient id="gradientLow" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#f59e0b" />
+                      <stop offset="100%" stopColor="#d97706" />
+                    </linearGradient>
+                    <linearGradient id="gradientOut" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#ef4444" />
+                      <stop offset="100%" stopColor="#dc2626" />
+                    </linearGradient>
+                    <linearGradient id="gradientOther" x1="0" y1="0" x2="0" y2="1">
+                      <stop offset="0%" stopColor="#6b7280" />
+                      <stop offset="100%" stopColor="#4b5563" />
+                    </linearGradient>
+                  </defs>
+                  <Pie 
+                    data={healthData} 
+                    innerRadius={65} 
+                    outerRadius={85} 
+                    paddingAngle={8} 
+                    dataKey="value" 
+                    stroke="none"
+                    animationBegin={0}
+                    animationDuration={800}
+                  >
+                    <Cell key="cell-0" fill="url(#gradientHealthy)" />
+                    <Cell key="cell-1" fill="url(#gradientLow)" />
+                    <Cell key="cell-2" fill="url(#gradientOut)" />
+                    <Cell key="cell-3" fill="url(#gradientOther)" />
                   </Pie>
                   <Tooltip contentStyle={{ backgroundColor: "#18181b", border: "1px solid #27272a", borderRadius: "8px" }} itemStyle={{ color: "#fff" }} />
                 </PieChart>
               </ResponsiveContainer>
-            </div>
-            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-              <div className="text-center">
-                <p className="text-xl font-bold text-white">{stats.totalSkus}</p>
-                <p className="text-xs text-zinc-500">SKUs</p>
+              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                <div className="text-center">
+                  <p className="text-2xl font-bold text-white tracking-tight">{stats.totalSkus}</p>
+                  <p className="text-[10px] uppercase tracking-wider text-zinc-500 font-medium">SKUs</p>
+                </div>
               </div>
             </div>
-            <div className="absolute right-0 flex flex-col gap-2 text-xs">
-              <div className="flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-emerald-500" /><span className="text-zinc-300">Healthy — {stats.healthyCount}</span></div>
-              <div className="flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-amber-500" /><span className="text-zinc-300">Low — {stats.lowStockCount}</span></div>
-              <div className="flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-red-500" /><span className="text-zinc-300">Out — {stats.outOfStockCount}</span></div>
+            <div className="flex flex-col gap-3 min-w-[140px]">
+              <div className="flex items-center justify-between gap-4">
+                <div className="flex items-center gap-2">
+                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.4)]" />
+                  <span className="text-xs text-zinc-400">Healthy</span>
+                </div>
+                <span className="text-xs font-semibold text-white">{stats.healthyCount}</span>
+              </div>
+              <div className="flex items-center justify-between gap-4">
+                <div className="flex items-center gap-2">
+                  <span className="w-2.5 h-2.5 rounded-full bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.4)]" />
+                  <span className="text-xs text-zinc-400">Low Stock</span>
+                </div>
+                <span className="text-xs font-semibold text-white">{stats.lowStockCount}</span>
+              </div>
+              <div className="flex items-center justify-between gap-4">
+                <div className="flex items-center gap-2">
+                  <span className="w-2.5 h-2.5 rounded-full bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.4)]" />
+                  <span className="text-xs text-zinc-400">Out of Stock</span>
+                </div>
+                <span className="text-xs font-semibold text-white">{stats.outOfStockCount}</span>
+              </div>
             </div>
           </div>
         </div>
@@ -333,12 +379,25 @@ if (!stats) {
               <div className="flex items-center gap-2"><span className="w-2 h-1 bg-red-500 rounded-full" /><span className="text-zinc-400">Stock out</span></div>
             </div>
             <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={movement} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+              <AreaChart data={movement} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                <defs>
+                  <linearGradient id="areaIn" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#10b981" stopOpacity={0.3}/>
+                    <stop offset="95%" stopColor="#10b981" stopOpacity={0}/>
+                  </linearGradient>
+                  <linearGradient id="areaOut" x1="0" y1="0" x2="0" y2="1">
+                    <stop offset="5%" stopColor="#ef4444" stopOpacity={0.3}/>
+                    <stop offset="95%" stopColor="#ef4444" stopOpacity={0}/>
+                  </linearGradient>
+                </defs>
                 <XAxis dataKey="date" axisLine={false} tickLine={false} tick={{ fill: "#71717a", fontSize: 10 }} minTickGap={20} />
-                <Tooltip contentStyle={{ backgroundColor: "#18181b", border: "1px solid #27272a", borderRadius: "8px" }} itemStyle={{ color: "#fff" }} />
-                <Line type="monotone" dataKey="stockIn" stroke="#10b981" strokeWidth={2} dot={false} />
-                <Line type="monotone" dataKey="stockOut" stroke="#ef4444" strokeWidth={2} dot={false} />
-              </LineChart>
+                <Tooltip 
+                  contentStyle={{ backgroundColor: "#18181b", border: "1px solid #27272a", borderRadius: "8px" }} 
+                  itemStyle={{ color: "#fff" }} 
+                />
+                <Area type="monotone" dataKey="stockIn" stroke="#10b981" strokeWidth={2} fillOpacity={1} fill="url(#areaIn)" />
+                <Area type="monotone" dataKey="stockOut" stroke="#ef4444" strokeWidth={2} fillOpacity={1} fill="url(#areaOut)" />
+              </AreaChart>
             </ResponsiveContainer>
           </div>
         </div>

@@ -151,6 +151,33 @@ async function main() {
         await Promise.all(updatedOrders.slice(i, i + chunk));
     }
 
+    console.log('--- Seeding Stock Logs ---');
+    const stockLogsData = [];
+    for (let i = 0; i < 1000; i++) {
+        const randomProduct = products[Math.floor(Math.random() * products.length)];
+        const randomUser = users[Math.floor(Math.random() * users.length)];
+        const types = ['RESTOCK', 'SALE', 'MANUAL', 'RETURN', 'DAMAGED'];
+        const type = faker.helpers.arrayElement(types);
+        
+        // Positive change for Restock and Return, negative for others
+        const isPositive = type === 'RESTOCK' || type === 'RETURN';
+        const change = isPositive 
+            ? faker.number.int({ min: 20, max: 150 }) 
+            : -faker.number.int({ min: 5, max: 30 });
+        
+        stockLogsData.push({
+            productId: randomProduct.id,
+            userId: randomUser.id,
+            type,
+            fromQty: randomProduct.stock,
+            toQty: randomProduct.stock + change,
+            change,
+            reason: faker.lorem.sentence(),
+            createdAt: faker.date.recent({ days: 30 }),
+        });
+    }
+    await prisma.stockLog.createMany({ data: stockLogsData });
+
     console.log('--- Seeding Complete! ---');
 }
 
