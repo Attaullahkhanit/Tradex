@@ -270,11 +270,14 @@ if (!stats) {
       {/* Charts Row */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Doughnut Chart */}
-        <div className="p-6 rounded-xl border border-zinc-800 bg-zinc-900/50 flex flex-col">
-          <h3 className="text-lg font-medium text-white">Stock health</h3>
-          <p className="text-sm text-zinc-400 mb-6">Distribution across all SKUs</p>
-          <div className="flex-1 flex flex-col sm:flex-row items-center justify-center gap-8 relative">
-            <div className="relative w-full max-w-[200px] h-[200px]">
+        <div className="p-6 rounded-xl border border-zinc-800 bg-zinc-900/50 flex flex-col min-h-[400px]">
+          <div>
+            <h3 className="text-lg font-medium text-white">Stock health</h3>
+            <p className="text-sm text-zinc-400 mb-6">Distribution across all SKUs</p>
+          </div>
+          
+          <div className="flex-1 flex flex-col items-center justify-between gap-6">
+            <div className="relative w-full aspect-square max-w-[240px]">
               <ResponsiveContainer width="100%" height="100%">
                 <PieChart>
                   <defs>
@@ -297,50 +300,43 @@ if (!stats) {
                   </defs>
                   <Pie 
                     data={healthData} 
-                    innerRadius={65} 
-                    outerRadius={85} 
-                    paddingAngle={8} 
+                    innerRadius="70%" 
+                    outerRadius="95%" 
+                    paddingAngle={4} 
                     dataKey="value" 
                     stroke="none"
                     animationBegin={0}
-                    animationDuration={800}
+                    animationDuration={1000}
                   >
                     <Cell key="cell-0" fill="url(#gradientHealthy)" />
                     <Cell key="cell-1" fill="url(#gradientLow)" />
                     <Cell key="cell-2" fill="url(#gradientOut)" />
                     <Cell key="cell-3" fill="url(#gradientOther)" />
                   </Pie>
-                  <Tooltip contentStyle={{ backgroundColor: "#18181b", border: "1px solid #27272a", borderRadius: "8px" }} itemStyle={{ color: "#fff" }} />
+                  <Tooltip 
+                    contentStyle={{ backgroundColor: "#18181b", border: "1px solid #27272a", borderRadius: "12px" }} 
+                    itemStyle={{ color: "#fff" }} 
+                  />
                 </PieChart>
               </ResponsiveContainer>
-              <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-                <div className="text-center">
-                  <p className="text-2xl font-bold text-white tracking-tight">{stats.totalSkus}</p>
-                  <p className="text-[10px] uppercase tracking-wider text-zinc-500 font-medium">SKUs</p>
-                </div>
+              <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                <span className="text-4xl font-bold text-white tracking-tighter">{stats.totalSkus}</span>
+                <span className="text-[10px] text-zinc-500 uppercase tracking-widest font-semibold mt-1">Total SKUs</span>
               </div>
             </div>
-            <div className="flex flex-col gap-3 min-w-[140px]">
-              <div className="flex items-center justify-between gap-4">
-                <div className="flex items-center gap-2">
-                  <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.4)]" />
-                  <span className="text-xs text-zinc-400">Healthy</span>
-                </div>
-                <span className="text-xs font-semibold text-white">{stats.healthyCount}</span>
+
+            <div className="grid grid-cols-3 w-full gap-3 mt-auto">
+              <div className="flex flex-col items-center justify-center p-3 rounded-2xl bg-zinc-800/20 border border-zinc-800/50 hover:bg-zinc-800/40 transition-colors">
+                <span className="text-lg font-bold text-emerald-400 leading-none mb-1">{stats.healthyCount}</span>
+                <span className="text-[9px] text-zinc-500 uppercase tracking-wider font-medium">Healthy</span>
               </div>
-              <div className="flex items-center justify-between gap-4">
-                <div className="flex items-center gap-2">
-                  <span className="w-2.5 h-2.5 rounded-full bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.4)]" />
-                  <span className="text-xs text-zinc-400">Low Stock</span>
-                </div>
-                <span className="text-xs font-semibold text-white">{stats.lowStockCount}</span>
+              <div className="flex flex-col items-center justify-center p-3 rounded-2xl bg-zinc-800/20 border border-zinc-800/50 hover:bg-zinc-800/40 transition-colors">
+                <span className="text-lg font-bold text-amber-400 leading-none mb-1">{stats.lowStockCount}</span>
+                <span className="text-[9px] text-zinc-500 uppercase tracking-wider font-medium">Low</span>
               </div>
-              <div className="flex items-center justify-between gap-4">
-                <div className="flex items-center gap-2">
-                  <span className="w-2.5 h-2.5 rounded-full bg-red-500 shadow-[0_0_8px_rgba(239,68,68,0.4)]" />
-                  <span className="text-xs text-zinc-400">Out of Stock</span>
-                </div>
-                <span className="text-xs font-semibold text-white">{stats.outOfStockCount}</span>
+              <div className="flex flex-col items-center justify-center p-3 rounded-2xl bg-zinc-800/20 border border-zinc-800/50 hover:bg-zinc-800/40 transition-colors">
+                <span className="text-lg font-bold text-red-400 leading-none mb-1">{stats.outOfStockCount}</span>
+                <span className="text-[9px] text-zinc-500 uppercase tracking-wider font-medium">Out</span>
               </div>
             </div>
           </div>
